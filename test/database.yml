@@ -22,3 +22,11 @@ fiveruns_city_dallas_test_master:
 fiveruns_city_dallas_test_slave:
   adapter: sqlite3
   database: test/vr_dallas_slave.db
+
+fiveruns_city_austin_burb_test_master:
+  adapter: sqlite3
+  database: test/vr_austin_master.db
+
+fiveruns_city_austin_burb_test_slave:
+  adapter: sqlite3
+  database: test/vr_austin_slave.db

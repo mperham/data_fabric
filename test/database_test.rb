@@ -51,4 +51,45 @@ class DatabaseTest < Test::Unit::TestCase
       end
     end
   end
+  
+  def test_we_reuse_connections
+    [:austin, :dallas].each do |city|
+      DataFabric.activate_shard :city => city do
+        assert_equal "fiveruns_city_#{city}_test_slave", TheWholeBurrito.connection.connection_name, "city: #{city}"
+        assert_equal DataFabric::PoolProxy, TheWholeBurrito.connection_pool.class, "city: #{city}"
+        assert !TheWholeBurrito.connected?, "city: #{city}"
+   
+        # Should use the slave
+        burrito = TheWholeBurrito.find(1)
+        assert_match "vr_#{city}_slave", burrito.name, "city: #{city}"
+   
+        assert TheWholeBurrito.connected?, "city: #{city}"
+      end
+    end
+    
+    # Since the burb uses the same db as austin we should re-use that connection instead of creating a new one
+    city = :austin_burb
+    DataFabric.activate_shard :city => city do
+      assert_equal "fiveruns_city_#{city}_test_slave", TheWholeBurrito.connection.connection_name, "city: #{city}"
+      assert_equal DataFabric::PoolProxy, TheWholeBurrito.connection_pool.class, "city: #{city}"
+      assert TheWholeBurrito.connected?, "city: #{city}"
+ 
+      # Should use the slave
+      burrito = TheWholeBurrito.find(1)
+      assert_match "vr_austin_slave", burrito.name, "city: #{city}"
+ 
+      assert TheWholeBurrito.connected?, "city: #{city}"
+    end
+    
+    db_connections = []
+    [:austin, :dallas, :austin_burb].each do |city|
+      DataFabric.activate_shard(:city => city) do
+        db_connections << TheWholeBurrito.connection.connection
+      end
+    end
+    db_connections = db_connections.uniq
+    
+    # We should only have 2 db connections since there are 2 uniq dbs
+    assert_equal 2, db_connections.size
+  end
 end

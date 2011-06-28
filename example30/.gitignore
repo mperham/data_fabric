@@ -2,3 +2,6 @@
 db/*.sqlite3
 log/*.log
 tmp/**/*
+/bin
+/db/schema.rb
+/vendor/bundle

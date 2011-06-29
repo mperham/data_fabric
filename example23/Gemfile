@@ -1,0 +1,5 @@
+source :rubygems
+gem 'rake'
+gem 'rails', '2.3.10'
+gem "data_fabric", :path => File.expand_path('../../', __FILE__)
+gem 'sqlite3-ruby'

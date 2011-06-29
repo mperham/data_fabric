@@ -120,7 +120,11 @@ module DataFabric
       self.class.shard_pools[name] ||= begin
         config = ActiveRecord::Base.configurations[name]
         raise ArgumentError, "Unknown database config: #{name}, have #{ActiveRecord::Base.configurations.inspect}" unless config
-        ActiveRecord::ConnectionAdapters::ConnectionPool.new(spec_for(config))
+        n, existing_equivalent_connection = self.class.shard_pools.detect do |name, conn|
+          config.stringify_keys == conn.spec.config.stringify_keys
+        end
+        existing_equivalent_connection ||
+          ActiveRecord::ConnectionAdapters::ConnectionPool.new(spec_for(config))
       end
     end
     

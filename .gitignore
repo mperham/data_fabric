@@ -1,0 +1,4 @@
+/.bundle/config
+/bin
+/bundle
+/test/*.db

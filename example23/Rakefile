@@ -47,12 +47,7 @@ task :test do
 end
 
 namespace :app do
-  task :prepare => [:clean, :copy_plugin, :migrate]
-
-  task :copy_plugin do
-    mkdir_p 'vendor/gems/data_fabric-1.0.0'
-    cp_r '../lib', 'vendor/gems/data_fabric-1.0.0'
-  end
+  task :prepare => [:clean, :migrate]
 
   task :clean do
     rm_rf 'log'

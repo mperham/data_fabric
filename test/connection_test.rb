@@ -78,7 +78,24 @@ class ConnectionTest < Test::Unit::TestCase
       ShardModel.connection.connection_name
     end
   end
-  
+
+  def test_respond_to_connection_methods
+    setup_configuration_for ShardModel, 'city_austin_test'
+    DataFabric.activate_shard(:city => 'austin', :category => 'art') do
+      assert ShardModel.connection.respond_to?(:columns)
+      assert ShardModel.connection.respond_to?(:primary_key)
+      assert !ShardModel.connection.respond_to?(:nonexistent_method)
+    end
+  end
+
+  def test_respond_to_connection_proxy_methods
+    setup_configuration_for ShardModel, 'city_austin_test'
+    DataFabric.activate_shard(:city => 'austin', :category => 'art') do
+      assert ShardModel.connection.respond_to?(:with_master)
+      assert !ShardModel.connection.respond_to?(:nonexistent_method)
+    end
+  end
+
   def test_enchilada
     setup_configuration_for TheWholeEnchilada, 'fiveruns_city_dallas_test_slave'
     setup_configuration_for TheWholeEnchilada, 'fiveruns_city_dallas_test_master'

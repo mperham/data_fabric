@@ -1,9 +1,7 @@
 = data_fabric
 
 ---------------------------
-I'm looking for someone to take over maintenance and responsibility
-for data_fabric.  If you use data_fabric or have an interest in its ongoing
-development, please let me know.
+The new home of data_fabric can be found at [http://github.com/bpot/data_fabric](http://github.com/bpot/data_fabric)
 ---------------------------
 
 

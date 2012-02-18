@@ -1,7 +1,7 @@
 = data_fabric
 
 ---------------------------
-The new home of data_fabric can be found at [http://github.com/bpot/data_fabric](http://github.com/bpot/data_fabric)
+The new home of data_fabric can be found at http://github.com/bpot/data_fabric
 ---------------------------
 
 
